@@ -16,8 +16,8 @@ export class LoginComponent implements AfterViewInit {
   @ViewChild('googleBtn') googleBtn!: ElementRef;
   public loginForm = this.fb.group({
     email: [localStorage.getItem('email') || '', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-    remember: [false]
+    password: ['123456', Validators.required],
+    remember: [true]
   });
 
   constructor(private router: Router,
