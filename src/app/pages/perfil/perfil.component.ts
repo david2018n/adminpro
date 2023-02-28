@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../models/usuario.model';
 import { FileUploadService } from '../../services/file-upload.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil',
@@ -16,6 +17,7 @@ export class PerfilComponent implements OnInit {
   public perfilForm!: FormGroup;
   public usuario: Usuario;
   public imagenSubir!: File;
+  public imgTemp: any = null;
 
   constructor(private fb: FormBuilder,
     private usuarioService: UsuarioService,
@@ -32,7 +34,6 @@ export class PerfilComponent implements OnInit {
   }
 
   actualizarPerfil() {
-    console.log(this.perfilForm.value)
     this.usuarioService.actualizarUsuario(this.perfilForm.value)
       .subscribe({
         next: (resp: any) => {
@@ -40,19 +41,42 @@ export class PerfilComponent implements OnInit {
           const { nombre, email } = resp.usuario;
           this.usuario.email = email;
           this.usuario.nombre = nombre;
+          Swal.fire('Guardado', 'Cambios fueron guardados', 'success');
+        },
+        error: (err) => {
+          Swal.fire('Error', err.error.msg, 'error');
+          console.log(err.error.msg);
         }
       })
   }
 
   cambiarImagen(file: File) {
-
     this.imagenSubir = file;
+
+    if (!file) {
+      this.imgTemp = null;
+      this.imagenSubir!= null;
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      this.imgTemp = reader.result;  
+    }
+
 
   }
 
   subirimagen() {
     this.fileUploadService.actualizarFoto(this.imagenSubir, 'usuarios', this.usuario.uid!)
-      .then(img => this.usuario.img = img);
+      .then(img => {
+        this.usuario.img = img
+        Swal.fire('Guardado', 'Se ha Actualizado la Imagen', 'success');
+      }).catch((err)=>{
+        Swal.fire('Error', 'No se pudo subir la imagen', 'error');
+      });
   }
 
 }
