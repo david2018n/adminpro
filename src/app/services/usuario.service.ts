@@ -7,6 +7,7 @@ import { loginForm } from '../interfaces/login-form.interface';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
+import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 
 declare const google: any;
 const base_url = environment.base_url;
@@ -27,6 +28,14 @@ export class UsuarioService {
     }
     get uid(): string{
       return this.usuario.uid || ''
+    }
+
+    get headers() {
+      return {
+        headers: {
+          'x-token': this.token
+        }
+      }
     }
 
     logout(){
@@ -105,6 +114,30 @@ export class UsuarioService {
         })
       )
   }
+
+  cargarUsuarios(desde: number = 0){
+    const url = `${base_url}/usuarios?desde=${desde}`
+    return this.http.get<CargarUsuario>(url, this.headers )
+    .pipe(
+      map((resp) => {
+        const usuarios = resp.usuarios.map( 
+          user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid));
+        return {
+          paged:{total: resp.paged.total},
+          usuarios
+        };
+      })
+    )
+  }
+
+  eliminarUsuario(usuario:Usuario){
+    // http://localhost:3000/api/usuarios/63e428e23b6a4095a16f4211
+    const url = `${base_url}/usuarios/${usuario.uid}`
+    return this.http.delete(url, this.headers )
+    
+  }
+
+  
 
 
 

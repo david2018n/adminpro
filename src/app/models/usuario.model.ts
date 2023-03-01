@@ -12,19 +12,18 @@ export class Usuario {
         public google?: boolean,
         public role?: string,
         public uid?: string,
-    ){}
+    ) { }
 
-    get imagenUrl(){
-        if ( this.img?.includes('https') ) {
+    get imagenUrl() {
+        if (!this.img) {
+            return `${base_url}/upload/usuarios/no-image`
+        } else if (this.img?.includes('https')) {
             return this.img;
-        }
-
-        if( this.img) {
+        } else if (this.img) {
             return `${base_url}/upload/usuarios/${this.img}`
         } else {
             return `${base_url}/upload/usuarios/no-image`
         }
-        
-        return ''
+
     }
 }
