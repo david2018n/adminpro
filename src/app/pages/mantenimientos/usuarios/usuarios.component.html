@@ -33,7 +33,7 @@
                                 <th class="w100">Avatar</th>
                                 <th>Correo</th>
                                 <th>Nombre</th>
-                                <th class="w100">Role</th>
+                                <th class="w140">Role</th>
                                 <th class="w100">Auth</th>
                                 <th class="w100 text-nowrap">Acciones</th>
                             </tr>
@@ -41,18 +41,26 @@
                         <tbody>
                             <tr *ngFor="let usuario of usuarios">
                                 <td class="text-center">
-                                    <img [src]="usuario.imagenUrl" class="avatar">
+                                    <img [src]="usuario.imagenUrl" class="avatar cursor" 
+                                    (click)="abrirModal(usuario)">
                                 </td>
                                 <td>{{usuario.email}}</td>
                                 <td>{{usuario.nombre}}</td>
-                                <td>{{usuario.role}}</td>
+                                <td>
+                                    <select class="form-control"
+                                    [(ngModel)]="usuario.role"
+                                    (change)="cambiarRole(usuario)">
+                                        <option value="ADMIN_ROLE">Admin</option>
+                                        <option value="USER_ROLE">User</option>
+                                    </select>
+                                </td>
                                 <td>
                                     <span *ngIf="usuario.google" class="label label-danger">google</span>
                                     <span *ngIf="!usuario.google" class="label label-info">Email</span>
                                 </td>
                                 
                                 <td class="text-nowrap text-center">
-                                    <a  data-toggle="tooltip" data-original-title="Editar"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    
 
                                     <a  data-toggle="tooltip" d
                                         ata-original-title="Borrar"
@@ -65,9 +73,9 @@
                     </table>
                 </div>
                 <div *ngIf="txtTermino.value.length === 0">
-                    <button class="btn btn-secondary" (click)="cambiarPagina(-5)">Anterior</button>
+                    <button [disabled]="desde===0" class="btn btn-secondary" (click)="cambiarPagina(-5)">Anterior</button>
                     &nbsp;
-                    <button class="btn btn-secondary" (click)="cambiarPagina(5)">Siguientes</button>
+                    <button [disabled]="desde>=totalUsuarios" class="btn btn-secondary" (click)="cambiarPagina(5)">Siguientes</button>
 
                 </div>
             </div>
