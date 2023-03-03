@@ -14,6 +14,9 @@ import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
+import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
+import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
     PromesasComponent,
     RxjsComponent,
     PerfilComponent,
-    UsuariosComponent],
+    UsuariosComponent,
+    HospitalesComponent,
+    MedicosComponent],
   exports: [DashboardComponent,
     ProgressComponent,
     Grafica1Component,
@@ -38,7 +43,8 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
     RouterModule,
     FormsModule,
     ComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ]
 })
 export class PagesModule { }

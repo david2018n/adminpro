@@ -127,7 +127,6 @@ export class UsuarioService {
   }
 
   eliminarUsuario(usuario:Usuario){
-    // http://localhost:3000/api/usuarios/63e428e23b6a4095a16f4211
     const url = `${base_url}/usuarios/${usuario.uid}`
     return this.http.delete(url, this.headers )
     
