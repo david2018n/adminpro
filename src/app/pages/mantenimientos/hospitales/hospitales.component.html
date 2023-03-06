@@ -2,7 +2,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <input type="text" class="form-control" placeholder="Buscar hospital..." />
+                <input  type="text" class="form-control" placeholder="Buscar hospital..." 
+                #txtTermino
+                (keyup)="buscarHospitales(txtTermino.value)"
+                />
             </div>
         </div>
     </div>
@@ -29,7 +32,7 @@
                     </div>
                     <div class="col">
                         <div class="text-right">
-                            <button (click)="abrirSwetAlert()" class="btn btn-primary"> <i class="fa fa-hospital-o"></i> Crear hospital</button>
+                            <button (click)="abrirSwetAlert()" class="btn btn-primary"> <i class="fa fa-user-md"></i> Crear hospital</button>
                         </div>
                     </div>
                 </div>
