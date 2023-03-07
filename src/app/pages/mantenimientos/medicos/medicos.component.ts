@@ -73,25 +73,25 @@ export class MedicosComponent implements OnInit, OnDestroy {
       }
     })
   }
-  async abrirSwetAlert(medico: string) {
-    const { value = '' } = await Swal.fire<string>({
-      text: 'Ingrese el nombre del nuevo Hospital',
-      title: 'Crear Hospital',
-      input: 'text',
-      inputPlaceholder: 'Nombre del Hospital',
-      showCancelButton: true,
-    })
-    if (value!.trim().length > 0) {
+  // async abrirSwetAlert(medico: Medico) {
+  //   const { value = '' } = await Swal.fire<string>({
+  //     text: 'Ingrese el nombre del nuevo Hospital',
+  //     title: 'Crear Hospital',
+  //     input: 'text',
+  //     inputPlaceholder: 'Nombre del Hospital',
+  //     showCancelButton: true,
+  //   })
+  //   if (value!.trim().length > 0) {
 
-      this.medicoService.crearMedico(medico)
-        .subscribe({
-          next: (resp: any) => {
-            this.medicos.push(resp.medico);
-            Swal.fire('Creado', 'Se ha creado el hospital correctamente', 'success');
-          }
-        })
-    }
-  }
+  //     this.medicoService.crearMedico(medico)
+  //       .subscribe({
+  //         next: (resp: any) => {
+  //           this.medicos.push(resp.medico);
+  //           Swal.fire('Creado', 'Se ha creado el hospital correctamente', 'success');
+  //         }
+  //       })
+  //   }
+  // }
 
   buscar(termino: string) {
 
