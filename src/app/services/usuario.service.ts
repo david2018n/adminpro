@@ -29,6 +29,9 @@ export class UsuarioService {
     get uid(): string{
       return this.usuario.uid || ''
     }
+    get role(): 'ADMIN_ROLE' | 'USER_ROLE'{
+      return this.usuario.role!;
+    }
 
     get headers() {
       return {
@@ -39,13 +42,21 @@ export class UsuarioService {
     }
 
     logout(){
+
+      //TODO: Borrar menu
       localStorage.removeItem('token');
+      localStorage.removeItem('menu');
       
       google.accounts.id.revoke('juan.d500@gmail.com', ()=>{
         this.ngzone.run(()=>{
           this.router.navigateByUrl('/login');
         })
       })
+    }
+
+    guardarStorage(token:string, menu: any){
+      localStorage.setItem('token', token);
+      localStorage.setItem('menu', JSON.stringify(menu));
     }
 
   validarToken(): Observable<boolean> {
@@ -63,10 +74,10 @@ export class UsuarioService {
       .pipe(
         map(
           (resp: any) => {
-            localStorage.setItem('token', resp.token);
             const {nombre, email, role, google, img='', uid} = resp.usuario;
             this.usuario= new Usuario(nombre, email, '', img, google, role, uid);
-            return true
+            this.guardarStorage(resp.token, resp.menu);
+            return true;
           }
         ),
         catchError(error => of(false))
@@ -78,7 +89,8 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
         tap((resp: any) => {
-          localStorage.setItem('token', resp.token)
+          this.guardarStorage(resp.token, resp.menu);
+
         })
       );
   }
@@ -96,18 +108,14 @@ export class UsuarioService {
 
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token)
-        })
+        tap((resp: any) => this.guardarStorage(resp.token, resp.menu) )
       );
   }
 
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token })
       .pipe(
-        tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
+        tap((resp: any) => this.guardarStorage(resp.token, resp.menu))
       )
   }
 
