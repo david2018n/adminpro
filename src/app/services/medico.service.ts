@@ -45,4 +45,12 @@ export class MedicoService {
     return this.http.delete(url, this.headers)
   }
 
+obtenerMedicoPorId(id: string){
+  const url = `${base_url}/medicos/${id}`
+  return this.http.get<{ok: boolean, medico: Medico}>(url, this.headers)
+  .pipe(
+    map( (resp: {ok: boolean, medico: Medico}) => resp.medico)
+  )
+}  
+
 }

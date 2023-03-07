@@ -6,11 +6,11 @@
                 <h6 class="card-subtitle">Actualizar Informacion</h6>
                 <form (submit)="guardarMedico()" class="form-horizontal p-t-20" [formGroup]="medicoForm">
 
-                    <div class="form-group row">
+                    <div *ngIf="medicoSeleccionado" class="form-group row">
                         <label for="exampleInputuname3" class="col-sm-3 control-label">Foto</label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <img class="w140" src="http://localhost:3000/api/upload/usuarios/dc3c4403-cd5d-48c1-8b0a-3ee99b0bb5d7.jpg" alt="">
+                                <img class="w140" [src]="medicoSeleccionado.img || '' | imagen: 'medicos' " alt="">
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Hospital</h4>
-                <h6 class="card-subtitle">{{hospitalSeleccionado}}</h6>
+                <h6 class="card-subtitle">{{hospitalSeleccionado.nombre}}</h6>
                 <img class="img-thumnail" [src]="hospitalSeleccionado.img || '' | imagen: 'hospitales'" alt="">
             </div>
         </div>
